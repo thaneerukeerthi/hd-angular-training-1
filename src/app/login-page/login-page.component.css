@@ -1,0 +1,19 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+  }
+ 
+  mat-form-field {
+    margin-bottom: 20px;
+  }
+ 
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  button{
+    margin-right: 10px;
+  }
