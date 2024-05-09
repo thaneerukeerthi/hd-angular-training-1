@@ -22,10 +22,7 @@ export class SearchPageComponent implements OnInit {
       this.username = localStorage.getItem('username') || '';
       
     } else {
-      // Handle the case where localStorage is null
-      // For example, set default values or display an error message
       this.username = '';
-      this.searchCount = 0;
     }
   }
 
