@@ -1,33 +1,44 @@
-<h2>Welcome {{ username }}</h2>
-<button mat-raised-button color="warn" (click)="logout()">Logout</button>
-<br><br>
-<mat-form-field>
-  <mat-label>Country</mat-label>
-  <mat-select [(value)]="selectedCountry">
-    <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
-  </mat-select>
-</mat-form-field>
-<br>
-<mat-form-field>
-  <input matInput placeholder="Other Country" [(ngModel)]="otherCountry">
-</mat-form-field>
-<button mat-raised-button color="primary" (click)="search()">Search</button>
-<br><br>
-<p>No. of searches: {{ searchCount }}</p>
-<br><br>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>State/Province</th>
-      <th>Website</th>
-    </tr>
-  </thead>
-  <tbody style="margin: 50px;">
-    <tr *ngFor="let university of universities">
-      <td>{{ university.name }}</td>
-      <td>{{ university.stateProvince ? university.stateProvince : '-' }}</td>
-      <td><a [href]="university.webpages" target="_blank">{{ university.webpages }}</a></td>
-    </tr>
-  </tbody>
-</table>
+<div class="container">
+  <h2>Welcome {{ username }}</h2>
+  <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+
+  <div class="form-container">
+    <mat-form-field>
+      <mat-label>Country</mat-label>
+      <mat-select [(value)]="selectedCountry">
+        <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <div class="other-country-container">
+      <mat-form-field>
+        <input matInput placeholder="Other Country" [(ngModel)]="otherCountry">
+      </mat-form-field>
+    </div>
+  </div>
+
+  <button mat-raised-button color="primary" (click)="search()">Search</button>
+
+  <br>
+  <p>No. of searches: {{ searchCount }}</p>
+  <br><br>
+
+  <div class="table-container">
+  <table *ngIf="universities.length > 0">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>State/Province</th>
+        <th>Website</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let university of universities">
+        <td>{{ university.name }}</td>
+        <td>{{ university.stateProvince ? university.stateProvince : '-' }}</td>
+        <td><a [href]="university.webpages" target="_blank">{{ university.webpages }}</a></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>

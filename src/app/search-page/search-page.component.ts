@@ -35,19 +35,16 @@ export class SearchPageComponent implements OnInit {
   }
 
   search(): void {
-    localStorage.setItem('searchCount', this.searchCount.toString());
     let country = this.otherCountry ? this.otherCountry : this.selectedCountry;
     this.universityService.getUniversities(country)
       .subscribe((data: any) => {
         this.universities = data.map((university: { [x: string]: any; name: any; web_pages: any; }) => ({
           name: university.name,
           stateProvince: university['state-province'],
-          webpages:university.web_pages
+          webpages: university.web_pages
         }));
         this.searchCount++;
-        console.log("print universities data", data)
-        console.log("print universities", this.universities)
+        localStorage.setItem('searchCount', this.searchCount.toString());
       });
   }
-
 }
