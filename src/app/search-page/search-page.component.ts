@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UniversityService } from '../university.service';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-search-page',
@@ -8,22 +10,29 @@ import { UniversityService } from '../university.service';
   styleUrls: ['./search-page.component.css']
 })
 export class SearchPageComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   username: string = '';
-  countries: string[] = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'France', 'Japan', 'India'];
+  countries: string[] = ['United States', 'United Kingdom', 'Canada', 'Australia', 'Germany', 'France', 'Japan', 'India'];
   selectedCountry: string = '';
   otherCountry: string = '';
   searchCount: number = 0;
   universities: any[] = [];
+  totalItems: number = 0;
+  pageSize: number = 10;
+  pageSizeOptions: number[] = [5, 10, 20, 50, 100];
+  dataSource!: MatTableDataSource<any>;
+  displayedColumns: string[] = ['name', 'stateProvince', 'webpages']
+  currentPage: number =0;
 
   constructor(private router: Router, private universityService: UniversityService) { }
 
   ngOnInit(): void {
     if (localStorage) {
       this.username = localStorage.getItem('username') || '';
-      
     } else {
       this.username = '';
     }
+    this.dataSource = new MatTableDataSource<any>();
   }
 
   logout(): void {
@@ -40,8 +49,18 @@ export class SearchPageComponent implements OnInit {
           stateProvince: university['state-province'],
           webpages: university.web_pages
         }));
+        this.dataSource.data = this.universities;
+        this.totalItems = this.universities.length;
+        console.log("items",this.totalItems, this.universities)
+        this.dataSource.paginator = this.paginator;
         this.searchCount++;
         localStorage.setItem('searchCount', this.searchCount.toString());
+        this.paginator.firstPage();
       });
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
   }
 }
