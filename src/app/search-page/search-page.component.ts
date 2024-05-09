@@ -23,24 +23,32 @@ export class SearchPageComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['name', 'stateProvince', 'webpages']
   currentPage: number =0;
+  isLoading: boolean = false;
 
   constructor(private router: Router, private universityService: UniversityService) { }
 
   ngOnInit(): void {
     if (localStorage) {
       this.username = localStorage.getItem('username') || '';
+      const searchCount = localStorage.getItem('searchCount');
+    if (searchCount) {
+      this.searchCount = parseInt(searchCount);
+    }
     } else {
       this.username = '';
+      this.searchCount = 0;
     }
     this.dataSource = new MatTableDataSource<any>();
   }
 
   logout(): void {
     localStorage.removeItem('username');
+    localStorage.removeItem('searchCount');
     this.router.navigate(['/login']);
   }
 
   search(): void {
+    this.isLoading =true
     let country = this.otherCountry ? this.otherCountry : this.selectedCountry;
     this.universityService.getUniversities(country)
       .subscribe((data: any) => {
@@ -56,6 +64,7 @@ export class SearchPageComponent implements OnInit {
         this.searchCount++;
         localStorage.setItem('searchCount', this.searchCount.toString());
         this.paginator.firstPage();
+        this.isLoading = false;
       });
   }
 
